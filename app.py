@@ -45,24 +45,25 @@ def load_generator(path: str = "generator.pth") -> Generator:
 
 generator = load_generator()
 
-# ─── Main page content ─────────────────────────────────────────────────────────
+# ─── Main page ─────────────────────────────────────────────────────────────────
 st.title("🖋️ Handwritten Digit Image Generator")
-st.markdown("Generate synthetic MNIST-style images using your trained GAN.")
+st.markdown("Generate synthetic MNIST-like images using your trained GAN.")
 
-# ─── Sidebar controls ───────────────────────────────────────────────────────────
-st.sidebar.header("Settings")
-digit = st.sidebar.selectbox("Choose a digit (0–9):", list(range(10)))
-if st.sidebar.button("Generate Images"):
+# Pick a digit on the main page
+digit = st.selectbox("Choose a digit (0–9):", list(range(10)))
+
+# Generate button on the main page
+if st.button("Generate Images"):
     st.header(f"Generated images of digit {digit}")
 
-    # sample 5 noise vectors and generate
+    # Sample and generate 5 images
     with torch.no_grad():
         z      = torch.randn(5, 100)
         labels = torch.full((5,), digit, dtype=torch.long)
-        imgs   = generator(z, labels).cpu()
-        imgs   = (imgs * 0.5 + 0.5).numpy()  # scale to [0,1]
+        imgs   = generator(z, labels).cpu()            # (5,1,28,28)
+        imgs   = (imgs * 0.5 + 0.5).numpy()            # scale to [0,1]
 
-    # display side by side
+    # Display them side by side
     cols = st.columns(5)
     for img_arr, col in zip(imgs, cols):
         arr = (img_arr.squeeze() * 255).astype(np.uint8)
