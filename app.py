@@ -47,7 +47,7 @@ generator = load_generator()
 
 # ─── Main page ─────────────────────────────────────────────────────────────────
 st.title("🖋️ Handwritten Digit Image Generator")
-st.markdown("Generate synthetic MNIST-like images using your trained GAN.")
+st.markdown("Generate synthetic MNIST-like images using trained GAN.")
 
 # Pick a digit on the main page
 digit = st.selectbox("Choose a digit (0–9):", list(range(10)))
